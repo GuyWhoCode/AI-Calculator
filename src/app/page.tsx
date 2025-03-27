@@ -2,6 +2,7 @@
 import { useChatHistory } from "@/lib/chatHistoryContext";
 import MathEqn from "./MathEqn";
 import { useEffect } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
     const { chatHistory } = useChatHistory();
@@ -11,22 +12,44 @@ export default function Home() {
     }, [chatHistory]);
 
     return (
-            <section>
-                <h1 className="text-scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
-                    AI Calculator
-                </h1>
+        <section>
+            <h1 className="text-scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
+                AI Calculator
+            </h1>
 
-                <div className="mt-4 bg-gray-200 p-8">
-                    {chatHistory.messages.map((msg, index) => (
-                        <div key={index} className={`mt-4 ${index % 2 === 0 ? "text-right" : "text-left"}`}>
-                            <p className="scroll-m-20 text-xl tracking-tight">
-                                <strong>{msg.user}:</strong> {msg.message}
-                            </p>
+            <div className="mt-4 bg-gray-300 p-8 rounded-lg min-h-[400px]">
+                {chatHistory.messages.map((msg, index) =>
+                    index % 2 === 0 ? (
+                        <div className="flex justify-end mb-4" key={index}>
+                            <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                                {msg.message}
+                            </div>
+                            <Avatar>
+                                <AvatarImage
+                                    src="./avatar.png"
+                                    alt="User avatar"
+                                />
+                                <AvatarFallback>AN</AvatarFallback>
+                            </Avatar>
                         </div>
-                    ))}
-                </div>
+                    ) : (
+                        <div className="flex justify-start mb-4" key={index}>
+                            <Avatar>
+                                <AvatarImage
+                                    src="./openai.png"
+                                    alt="User avatar"
+                                />
+                                <AvatarFallback>AI</AvatarFallback>
+                            </Avatar>
+                            <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                                {msg.message}
+                            </div>
+                        </div>
+                    )
+                )}
+            </div>
 
-                <MathEqn />
-            </section>
+            <MathEqn />
+        </section>
     );
 }

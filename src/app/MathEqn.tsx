@@ -7,6 +7,19 @@ export default function MathEqn() {
     const { setChatHistory } = useChatHistory();
     const [mathEqn, setMathEqn] = useState<string>("");
 
+    const submitMathEqn = () => {
+        setChatHistory(prev => ({
+            messages: [
+                ...prev.messages,
+                {
+                    user: "User",
+                    message: mathEqn,
+                },
+            ],
+        }));
+        setMathEqn("");
+    };
+
     return (
         <div className="flex flex-row items-center">
             <Input
@@ -17,23 +30,13 @@ export default function MathEqn() {
                 }}
                 value={mathEqn}
                 autoFocus
-            />
-            <Button
-                variant="outline"
-                size="lg"
-                onClick={() => {
-                    setChatHistory(prev => ({
-                        messages: [
-                            ...prev.messages,
-                            {
-                                user: "User",
-                                message: mathEqn,
-                            },
-                        ],
-                    }));
-                    setMathEqn("");
+                onKeyDown={e => {
+                    if (e.key === "Enter") {
+                        submitMathEqn();
+                    }
                 }}
-            >
+            />
+            <Button variant="outline" size="lg" onClick={submitMathEqn}>
                 Submit
             </Button>
         </div>
