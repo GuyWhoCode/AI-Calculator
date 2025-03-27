@@ -1,15 +1,10 @@
 "use client";
 import { useChatHistory } from "@/lib/chatHistoryContext";
 import MathEqn from "./MathEqn";
-import { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
     const { chatHistory } = useChatHistory();
-
-    useEffect(() => {
-        console.log(chatHistory);
-    }, [chatHistory]);
 
     return (
         <section>
@@ -19,7 +14,7 @@ export default function Home() {
 
             <div className="mt-4 bg-gray-300 p-8 rounded-lg min-h-[400px]">
                 {chatHistory.messages.map((msg, index) =>
-                    index % 2 === 0 ? (
+                    msg.user == "User" ? (
                         <div className="flex justify-end mb-4" key={index}>
                             <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
                                 {msg.message}

@@ -2,12 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useChatHistory } from "@/lib/chatHistoryContext";
 import { useState } from "react";
+import { evaluateMathEqn } from "./aiResponse";
 
 export default function MathEqn() {
     const { setChatHistory } = useChatHistory();
     const [mathEqn, setMathEqn] = useState<string>("");
 
-    const submitMathEqn = () => {
+    const submitMathEqn = async () => {
+        if (!mathEqn) return;
+
         setChatHistory(prev => ({
             messages: [
                 ...prev.messages,
@@ -18,6 +21,18 @@ export default function MathEqn() {
             ],
         }));
         setMathEqn("");
+
+        const answerResponse = await evaluateMathEqn(mathEqn);
+        setChatHistory(prev => ({
+            messages: [
+                ...prev.messages,
+                {
+                    user: "AI",
+                    message:
+                        answerResponse.answer || answerResponse.errorMessage,
+                },
+            ],
+        }));
     };
 
     return (
